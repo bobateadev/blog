@@ -12,7 +12,11 @@ eval "$(ssh-agent -s)"
 chmod 400 ubuntu.pem
 
 ssh-add ubuntu.pem
-rsync -r ./ ubuntu@52.76.173.135:/var/content/blog
+rsync -r ./_site/ ubuntu@52.76.173.135:/var/content/blog
+
+rm -rf _site/
+rm Gemfile.lock
+rm -rf .sass-cache/
 
 chmod 644 ubuntu.pem
 rm ubuntu.pem
