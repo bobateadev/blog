@@ -1,0 +1,21 @@
+language: ruby
+cache: ccache
+sudo: required
+dist: trusty
+os:
+  - linux
+rvm:
+  - 2.3.3
+env:
+  - JOB=PRE_COMMIT
+
+addons:
+  ssh_known_hosts: 52.76.173.135
+
+script:
+  - .travis/deploy.sh
+
+notifications:
+  email:
+    on_success: change
+    on_failure: always
