@@ -4,20 +4,33 @@ sudo: required
 dist: trusty
 os:
   - linux
+
+#branches:
+#  only:
+#    - develop
+#    - master
+#    - /^release.*$/
+
 rvm:
   - 2.3.3
-env:
-  - JOB=PRE_COMMIT
 
 addons:
-  ssh_known_hosts: 52.76.173.135
+  ssh_known_hosts: staging.paddlepaddle.org
+
+install:
+  - bundle install
 
 before_script:
   - chmod +x .travis/deploy.sh
 
 script:
   - bundle exec jekyll build
-  - .travis/deploy.sh
+  - |
+    export DEPLOY_DOCS_SH=https://raw.githubusercontent.com/PaddlePaddle/PaddlePaddle.org/deploy_blog/scripts/deploy/deploy_docs.sh  # change branch
+    export BLOG_DIR=`pwd`
+    echo "blog dir = $BLOG_DIR"
+    cd ..
+    if [[ "$TRAVIS_PULL_REQUEST" == "false" ]] && [[ "$TRAVIS_BRANCH" == "add_travis_ci_for_blog"  ||  "$TRAVIS_BRANCH" =~ ^v[[:digit:]]+\.[[:digit:]]+(\.[[:digit:]]+)?(-\S*)?$ ]]; then echo "YES!!!"; else echo "not develop branch, no deploy"; fi;
 
 notifications:
   email:
