@@ -6,9 +6,7 @@ function abort(){
 
 trap 'abort' 0
 
-source "https://rubygems.org"
-
-gem "jekyll"
-gem "html-proofer"
+gem install jekyll -v 3.5.2
+gem install html-proofer
 
 trap : 0
