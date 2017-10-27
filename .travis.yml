@@ -11,20 +11,26 @@ rvm:
 addons:
   ssh_known_hosts: staging.paddlepaddle.org
 
-install:
-  - bundle install
+before_install:
+  - rvm install 2.4.1
+  - rvm use 2.4.1
+  - gem install bundler
+  - bundle check || bundle install
 
 before_script:
  - chmod +x .travis/build_jekyll.sh
 
 script:
+  - echo "list gem"
+  - gem list
   - .travis/build_jekyll.sh
   - |
     export DEPLOY_DOCS_SH=https://raw.githubusercontent.com/PaddlePaddle/PaddlePaddle.org/develop/scripts/deploy/deploy_docs.sh
     export BLOG_DIR=`pwd`
     cd ..
     if [[ "$TRAVIS_PULL_REQUEST" == "false" ]] && [[ "$TRAVIS_BRANCH" == "master"  ||  "$TRAVIS_BRANCH" =~ ^v[[:digit:]]+\.[[:digit:]]+(\.[[:digit:]]+)?(-\S*)?$ ]]; then curl $DEPLOY_DOCS_SH | bash -s $CONTENT_DEC_PASSWD $TRAVIS_BRANCH $BLOG_DIR; else echo "not develop branch, no deploy"; fi;
-
+  - echo "list gem last"
+  - gem list
 notifications:
   email:
     on_success: change
