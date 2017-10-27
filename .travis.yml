@@ -14,7 +14,11 @@ addons:
 install:
   - bundle install
 
+before_script:
+ - chmod +x .travis/build_jekyll.sh
+
 script:
+  - .travis/build_jekyll.sh
   - |
     export DEPLOY_DOCS_SH=https://raw.githubusercontent.com/PaddlePaddle/PaddlePaddle.org/develop/scripts/deploy/deploy_docs.sh
     export BLOG_DIR=`pwd`
