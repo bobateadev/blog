@@ -18,18 +18,12 @@ install:
   - bundle check || bundle install
 
 script:
-  - echo "which bundle"
-  - which bundle
-  - echo "list gem"
-  - gem list
-  - source $(rvm 2.4.1 do rvm env --path)
   - |
     export DEPLOY_DOCS_SH=https://raw.githubusercontent.com/PaddlePaddle/PaddlePaddle.org/develop/scripts/deploy/deploy_docs.sh
     export BLOG_DIR=`pwd`
     cd ..
-    if [[ "$TRAVIS_PULL_REQUEST" == "false" ]] && [[ "$TRAVIS_BRANCH" == "master"  ||  "$TRAVIS_BRANCH" =~ ^v[[:digit:]]+\.[[:digit:]]+(\.[[:digit:]]+)?(-\S*)?$ ]]; then curl $DEPLOY_DOCS_SH | bash -s $CONTENT_DEC_PASSWD $TRAVIS_BRANCH $BLOG_DIR; else echo "not develop branch, no deploy"; fi;
-  - echo "list gem last"
-  - gem list
+    if [[ "$TRAVIS_PULL_REQUEST" != "false" ]] || [[ "$TRAVIS_BRANCH" != "master" ]]; then echo "not master branch, no deploy"; exit 0; fi; 
+    curl $DEPLOY_DOCS_SH | bash -s $CONTENT_DEC_PASSWD $TRAVIS_BRANCH $BLOG_DIR
 
 notifications:
   email:
