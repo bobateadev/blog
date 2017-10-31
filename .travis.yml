@@ -19,6 +19,7 @@ script:
   - |
     export DEPLOY_DOCS_SH=https://raw.githubusercontent.com/PaddlePaddle/PaddlePaddle.org/develop/scripts/deploy/deploy_docs.sh
     export BLOG_DIR=`pwd`
+    bash --login
     rvm install 2.4.1
     rvm use 2.4.1
     gem install bundler
