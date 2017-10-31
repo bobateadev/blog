@@ -22,7 +22,7 @@ script:
   - which bundle
   - echo "list gem"
   - gem list
-  - /bin/bash --login
+  - source $(rvm 2.4.1 do rvm env --path)
   - |
     export DEPLOY_DOCS_SH=https://raw.githubusercontent.com/PaddlePaddle/PaddlePaddle.org/develop/scripts/deploy/deploy_docs.sh
     export BLOG_DIR=`pwd`
