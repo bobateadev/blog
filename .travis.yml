@@ -11,12 +11,6 @@ rvm:
 addons:
   ssh_known_hosts: 52.76.173.135
 
-install:
-  - rvm install 2.4.1
-  - rvm use 2.4.1
-  - gem install bundler
-  - bundle check || bundle install
-
 script:
   - echo "which bundle"
   - which bundle
@@ -25,6 +19,11 @@ script:
   - |
     export DEPLOY_DOCS_SH=https://raw.githubusercontent.com/PaddlePaddle/PaddlePaddle.org/develop/scripts/deploy/deploy_docs.sh
     export BLOG_DIR=`pwd`
+    rvm install 2.4.1
+    rvm use 2.4.1
+    gem install bundler
+    bundle check || bundle install
+    ruby --version
     cd ..
     if [[ "$TRAVIS_PULL_REQUEST" == "false" ]] && [[ "$TRAVIS_BRANCH" == "master"  ||  "$TRAVIS_BRANCH" =~ ^v[[:digit:]]+\.[[:digit:]]+(\.[[:digit:]]+)?(-\S*)?$ ]]; then curl $DEPLOY_DOCS_SH | bash -s $CONTENT_DEC_PASSWD $TRAVIS_BRANCH $BLOG_DIR; else echo "not develop branch, no deploy"; fi;
   - echo "list gem last"
